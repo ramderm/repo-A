@@ -3,14 +3,10 @@ name: SonarCloud analysis
 on:
   push:
     branches:
-      - main
-      - develop
-      - feature/*  # Specify other branches as needed
+      - master
   pull_request:
     branches:
-      - main
-      - develop
-      - feature/*  # Specify other branches as needed
+      - master
     types: [opened, synchronize, reopened]
   workflow_dispatch:
 
