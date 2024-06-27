@@ -16,7 +16,7 @@ jobs:
 
     steps:
       - name: Install jq
-        run: sudo apt-get install jq
+        run: sudo apt-get install -y jq
         
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -38,4 +38,4 @@ jobs:
             echo "Quality gate failed"
             exit 1
           fi
-
+        shell: bash
