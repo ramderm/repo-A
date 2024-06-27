@@ -1,0 +1,48 @@
+name: SonarCloud analysis
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+      - feature/*  # Specify other branches as needed
+  pull_request:
+    branches:
+      - main
+      - develop
+      - feature/*  # Specify other branches as needed
+    types: [opened, synchronize, reopened]
+  workflow_dispatch:
+
+permissions:
+  pull-requests: read # allows SonarCloud to decorate PRs with analysis results
+
+jobs:
+  Analysis:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Install jq
+        run: sudo apt-get install -y jq
+        
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Analyze with SonarCloud
+        uses: SonarSource/sonarcloud-github-action@4006f663ecaf1f8093e8e4abb9227f6041f52216
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          args: >
+            -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }}
+            -Dsonar.organization=${{ secrets.SONAR_ORGANIZATION_KEY }}
+          projectBaseDir: .
+
+      - name: Check SonarCloud Quality Gate
+        run: |
+          status=$(curl -s -u $SONAR_TOKEN: "https://sonarcloud.io/api/qualitygates/project_status?projectKey=${{ secrets.SONAR_PROJECT_KEY }}" | jq -r '.projectStatus.status')
+          if [ "$status" != "OK" ]; then
+            echo "Quality gate failed"
+            exit 1
+          fi
+        shell: bash
