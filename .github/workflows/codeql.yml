@@ -16,7 +16,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        language: [ 'javascript', 'html', 'css', 'csharp', 'cpp' ]
+        language: [ 'javascript', 'react', 'TypeScript' ]
         # CodeQL supports [ 'cpp', 'csharp', 'go', 'java', 'javascript', 'python', 'ruby' ] and more
 
     steps:
