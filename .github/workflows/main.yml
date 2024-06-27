@@ -45,4 +45,4 @@ jobs:
             echo "Quality gate failed"
             exit 1
           fi
-        shell: bash
+        shell: /usr/bin/bash --noprofile --norc -e -o pipefail
